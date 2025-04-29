@@ -14,7 +14,7 @@ export class CreatePostDto {
   comment: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   photo_b: string;
 
   @IsString()
