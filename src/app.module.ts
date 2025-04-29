@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from '../config/database/typeorm.config';
 import { AppService } from './app.service';
 import { PostsModule } from './res/posts/posts.module';
+import { UserModule } from './res/user/user.module';
+import { RankingModule } from './res/ranking/ranking.module';
+import { HomeModule } from './res/home/home.module';
 
 @Module({
   imports: [
@@ -18,6 +21,9 @@ import { PostsModule } from './res/posts/posts.module';
       useFactory: typeOrmConfig,
     }),
     PostsModule,
+    UserModule,
+    RankingModule,
+    HomeModule,
   ],
   providers: [AppService],
 })
