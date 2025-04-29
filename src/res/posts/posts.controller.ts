@@ -1,4 +1,3 @@
-// src/res/posts/posts.controller.ts
 import { Controller, Post, Get, Body, Param, NotFoundException } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
