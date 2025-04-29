@@ -1,5 +1,5 @@
 // src/res/posts/posts.controller.ts
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Post as PostEntity } from './entities/posts.entity';
@@ -11,5 +11,10 @@ export class PostsController {
   @Post()
   async create(@Body() dto: CreatePostDto): Promise<PostEntity> {
     return this.postsService.createPost(dto);
+  }
+
+  @Get()
+  async getAllPosts(): Promise<PostEntity[]> {
+    return this.postsService.findAllPosts();
   }
 }
