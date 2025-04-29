@@ -9,6 +9,7 @@ import { PostsModule } from './res/posts/posts.module';
 import { UserModule } from './res/user/user.module';
 import { RankingModule } from './res/ranking/ranking.module';
 import { HomeModule } from './res/home/home.module';
+import { CommentsModule } from './res/comments/comments.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HomeModule } from './res/home/home.module';
     UserModule,
     RankingModule,
     HomeModule,
+    CommentsModule,
   ],
   providers: [AppService],
 })
