@@ -1,5 +1,3 @@
-// src/app.module.ts
-
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +8,7 @@ import { UserModule } from './res/user/user.module';
 import { RankingModule } from './res/ranking/ranking.module';
 import { HomeModule } from './res/home/home.module';
 import { ReplysModule } from './res/replys/replys.module';
+import { StatsModule } from './res/stats/stats.module';
 
 @Module({
   imports: [
@@ -26,6 +25,7 @@ import { ReplysModule } from './res/replys/replys.module';
     RankingModule,
     HomeModule,
     ReplysModule,
+    StatsModule,
   ],
   providers: [AppService],
 })
