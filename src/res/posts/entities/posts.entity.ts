@@ -12,7 +12,7 @@ export class Post {
   comment: string;
 
   @Column({ nullable: true })
-  photo_b: string;
+  photo_b?: string;
 
   @Column({ nullable: true })
   photo_l?: string;
