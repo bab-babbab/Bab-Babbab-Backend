@@ -10,13 +10,26 @@ export class StatsService{
         private readonly postRepository: Repository<Post>,
     ){}
 
-    async getDailyPostCount(): Promise<{date : string; count: number }[]> {
-        return await this.postRepository
-            .createQueryBuilder('post')
-            .select("DATE_FORMAT(post.created_at, '%Y-%m-%d')", 'date')
-            .addSelect('COUNT(*)', 'count')
-            .groupBy('date')
-            .orderBy('date', 'DESC')
-            .getRawMany();
-    }
+    async getDailyPostCount(userId: string): Promise<{ date: string; count: number }[]> {
+        const raw = await this.postRepository
+          .createQueryBuilder('post')
+          .select("DATE(post.created_at)", 'date')
+          .addSelect(`
+            SUM(
+              IF(post.photo_b != '', 1, 0) +
+              IF(post.photo_l != '', 1, 0) +
+              IF(post.photo_d != '', 1, 0)
+            )
+          `, 'count')
+          .where('post.user_id = :userId', { userId })
+          .groupBy('date')
+          .orderBy('date', 'DESC')
+          .getRawMany();
+      
+        return raw.map(row => ({
+          date: row.date.toISOString().slice(0, 10),
+          count: parseInt(row.count, 10),
+        }));
+      }
+      
 }
