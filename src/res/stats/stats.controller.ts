@@ -1,11 +1,12 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { StatsService } from './stats.service';
 
-@Controller('stats/posts')
+@Controller('stats')
 export class StatsController{
     constructor(private readonly statsService : StatsService) {}
-    @Get('daily')
-    async getDailyPostCount() {
-        return this.statsService.getDailyPostCount();
+    @Get('daily/:userId')
+    async getDailyPostCount(@Param('userId') userId : string) : Promise<{ date: string; count: number }[]>{
+        return this.statsService.getDailyPostCount(userId);
     }
+
 }
