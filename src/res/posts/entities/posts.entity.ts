@@ -11,7 +11,7 @@ export class Post {
   @Column()
   comment: string;
 
-  @Column()
+  @Column({ nullable: true })
   photo_b: string;
 
   @Column({ nullable: true })
