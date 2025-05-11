@@ -11,8 +11,8 @@ export class Post {
   @Column()
   comment: string;
 
-  @Column()
-  photo_b: string;
+  @Column({ nullable: true })
+  photo_b?: string;
 
   @Column({ nullable: true })
   photo_l?: string;
