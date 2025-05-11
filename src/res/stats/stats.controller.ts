@@ -8,5 +8,8 @@ export class StatsController{
     async getDailyPostCount(@Param('userId') userId : string) : Promise<{ date: string; count: number }[]>{
         return this.statsService.getDailyPostCount(userId);
     }
-
+    @Get('sequence/:userId')
+    async getSequenceDayCount(@Param('userId') userId : string) : Promise<number> {
+        return this.statsService.getPhotoStreak(userId);
+    }
 }
