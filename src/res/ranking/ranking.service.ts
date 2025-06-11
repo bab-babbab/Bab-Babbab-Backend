@@ -57,7 +57,7 @@ export class RankingService {
       return {
         userId: r.userId,
         name: user?.name ?? '',
-        profile: user?.proflie ?? '',
+        profile: user?.profile ?? '',
         uploadCount: parseInt(r.uploadCount, 10),
       };
     });
