@@ -9,6 +9,8 @@ import { RankingModule } from './res/ranking/ranking.module';
 import { HomeModule } from './res/home/home.module';
 import { ReplysModule } from './res/replys/replys.module';
 import { StatsModule } from './res/stats/stats.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +28,10 @@ import { StatsModule } from './res/stats/stats.module';
     HomeModule,
     ReplysModule,
     StatsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
   ],
   providers: [AppService],
 })

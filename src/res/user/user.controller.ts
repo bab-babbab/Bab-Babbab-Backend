@@ -36,9 +36,11 @@ export class UserController {
     }),
   )
   async saveUserInfo(@UploadedFile() file: Express.Multer.File, @Body() body: UserInfoDto) {
+    const filePath = file ? `uploads/${file.filename}` : '';
+
     const dto: UserInfoDto = {
       ...body,
-      profile: file?.filename || '',
+      profile: filePath,
     };
 
     return this.userService.saveUserInfo(dto);
