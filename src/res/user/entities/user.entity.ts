@@ -12,15 +12,15 @@ export class User {
   name: string;
 
   @Column({ length: 20 })
-  proflie: string;
+  profile: string;
 
-  @Column({ length: 20 })
+  @Column({ nullable: true })
   school_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   grade: number;
 
-  @Column()
+  @Column({ nullable: true })
   class: number;
 
   @Column({ length: 50 })
