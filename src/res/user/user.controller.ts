@@ -1,49 +1,32 @@
-import { Controller, Post, Body, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { UserService } from './user.service';
 import { UserInfoDto } from './dto/user-info.dto';
 import { SchoolInfoDto } from './dto/school-info.dto';
-import * as fs from 'fs';
-
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-const generateFilename = (originalname: string) => {
-  const ext = extname(originalname);
-  const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-  return `${unique}${ext}`;
-};
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post('user-info')
   @UseInterceptors(
     FileInterceptor('profile', {
-      storage: diskStorage({
-        destination: uploadDir,
-        filename: (req, file, cb) => {
-          const uniqueName = generateFilename(file.originalname);
-          cb(null, uniqueName);
-        },
-      }),
+      storage: memoryStorage(), // 메모리 저장
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB 제한
     }),
   )
-  async saveUserInfo(@UploadedFile() file: Express.Multer.File, @Body() body: UserInfoDto) {
-    const filePath = file ? `uploads/${file.filename}` : '';
-
-    const dto: UserInfoDto = {
-      ...body,
-      profile: filePath,
-    };
-
-    return this.userService.saveUserInfo(dto);
+  async saveUserInfo(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: UserInfoDto,
+  ) {
+    return this.userService.saveUserInfo(body, file);
   }
 
   @Post('school-info')

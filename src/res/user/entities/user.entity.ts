@@ -5,13 +5,10 @@ export class User {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  email: string;
-
   @Column({ length: 20 })
   name: string;
 
-  @Column({ length: 20 })
+  @Column({ length: 255, nullable: true })
   profile: string;
 
   @Column({ nullable: true })
