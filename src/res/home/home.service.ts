@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
-import { UserInfoDto } from '../user/dto/user-info.dto';
+import { UserProfileDto } from '../user/dto/user-profile.dto';
 
 @Injectable()
 export class HomeService {
@@ -11,23 +11,30 @@ export class HomeService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async getUserInfo(userId: string): Promise<UserInfoDto> {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      select: ['id', 'name', 'profile', 'message'],
-    });
+  async getUserInfo(userId: string): Promise<UserProfileDto> {
+  const user = await this.userRepository.findOne({
+    where: { id: userId },
+    select: ['id', 'name', 'profile', 'message', 'class', 'grade'],
+  });
 
-    if (!user) {
-      throw new Error('유저를 찾을 수 없습니다.');
-    }
+  if (!user) {
+    throw new Error('유저를 찾을 수 없습니다.');
+  }
 
-    // 매핑
-    return {
+  return {
+    userInfo: {
       id: user.id,
       name: user.name,
       profile: user.profile,
       message: user.message,
-    };
-  }
+    },
+    schoolInfo: {
+      id : user.id,
+      school_name : user.school_name,
+      grade: user.grade,
+      class: user.class,
+    },
+  };
+}
 
 }
