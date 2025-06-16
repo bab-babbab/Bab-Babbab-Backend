@@ -26,34 +26,34 @@ export class UserService {
   }
 
   async saveUserInfo(dto: UserInfoDto, file: Express.Multer.File): Promise<User> {
-  let profileImageUrl = "";
+    let profileImageUrl = "";
 
-  if (file) {
-    const key = `profiles/${dto.id}/${uuid()}.jpg`;
-    try {
-      const uploadResult = await this.s3.upload({
-        Bucket: process.env.AWS_BUCKET_NAME!,
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-        ACL: 'public-read',
-      }).promise();
+    if (file) {
+      const key = `profiles/${dto.id}/${uuid()}.jpg`;
+      try {
+        const uploadResult = await this.s3.upload({
+          Bucket: process.env.AWS_BUCKET_NAME!,
+          Key: key,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+          ACL: 'public-read',
+        }).promise();
 
-      profileImageUrl = uploadResult.Location; // 파일 위치
-    } catch (error) {
-      throw new Error('파일 업로드에 실패했습니다: ' + error.message);
+        profileImageUrl = uploadResult.Location; // 파일 위치
+      } catch (error) {
+        throw new Error('파일 업로드에 실패했습니다: ' + error.message);
+      }
     }
+
+    const newUser = this.userRepository.create({
+      id: dto.id,
+      name: dto.name,
+      profile: profileImageUrl,
+      message: dto.message,
+    });
+
+    return await this.userRepository.save(newUser);
   }
-
-  const newUser = this.userRepository.create({
-    id: dto.id,
-    name: dto.name,
-    profile: profileImageUrl, 
-    message: dto.message,      
-  });
-
-  return await this.userRepository.save(newUser);
-}
 
 
 

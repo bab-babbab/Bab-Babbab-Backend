@@ -11,9 +11,6 @@ export class RankingService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
-    @InjectRepository(Post)
-    private readonly postRepository: Repository<Post>,
-
     private readonly statsService: StatsService,
   ) {}
 
@@ -23,10 +20,11 @@ export class RankingService {
     const rankings = await Promise.all(
       allUsers.map(async user => {
         const streak = await this.statsService.getPhotoStreak(user.id);
-        return { userId: user.id, streak };
+        const badge = await this.statsService.getBadge(user.id);
+        return { userId: user.id, streak, badge };
       }),
     );
 
-    return rankings.sort((a, b) => b.streak - a.streak);
+    return rankings.sort((a, b) => b.badge - a.badge);
   }
 }
